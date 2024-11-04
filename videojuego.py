@@ -75,7 +75,12 @@ minimo = 0
 
 
 
-def mostrar_menu():
+def mostrar_menu() -> str:
+    '''
+    funcion para mostrar el menu
+    no toma parametros
+    retorna el menu
+    '''
     return(f'''
     Laberinto Developers
     1: JUGAR
@@ -87,7 +92,12 @@ def mostrar_menu():
     
 
 
-def burbuja(historial):
+def burbuja(historial: list):
+    '''
+    funcion para ordenar el historial
+    toma como parametro una lista y la ordena
+    no retorna nada
+    '''
     n = len(historial)
     for i in range(n):
         for j in range(0, n-i-1):
@@ -96,7 +106,12 @@ def burbuja(historial):
                 historial[j], historial[j+1] = historial[j+1], historial[j]   
 
 
-def mostrar_puntuacion(historial_puntuacion):
+def mostrar_puntuacion(historial_puntuacion: list):
+    '''
+    funcion para mostrar la puntuacion
+    recibe una lista como parametro
+    no retornada nada
+    '''
     if not historial_puntuacion:
         print(f"Todavia no hay jugadores en el ranking")
     else:
@@ -106,6 +121,12 @@ def mostrar_puntuacion(historial_puntuacion):
     
 
 def elegir_menu():
+    '''
+    funcion para elegir en el menu
+    no toma argumentos
+    no retorna nada
+    
+    '''
     seleccion = ""
     while seleccion != "4":
         print(mostrar_menu())
@@ -133,18 +154,29 @@ def elegir_menu():
 
     
 
-def mostrar_creditos():
+def mostrar_creditos() -> str:
+    '''
+    funcion para mostrar creditos
+    no toma argumentos
+    retorna un string
+    '''
     
     return f'''
     espero que disfruten este juego, fue hecho con cariño
     desarrolladores del equipo devolopers : 
     Emiliano Garcia
     Daiana Colque
-    Valentina Medina
-    (derechos reservados)
+    (derechos reservados, developers InCompany)
 '''
 
-def como_jugar():
+def como_jugar() -> str:
+    
+    '''funcion para mostrar el tutorial
+    no toma parametros
+    retorna un str
+    '''
+    
+
     return f'''
     cada turno elegiras si avanzar o descansar para tomar un objeto
     cada vez que avances tendras la oportunidad de vivir un evento o encontrar un enemigo..
@@ -153,13 +185,21 @@ def como_jugar():
     '''
 
 def salir_juego():
+    '''
+    funcion para salir del juego
+    no toma argumentos
+    no retorna nada
+    '''
 
     print(("Gracias por haber jugado nuestro juego, Presiona una tecla para salir"))
     keyboard.read_event()
     
 
-def reiniciar_heroe(heroe: dict):
-    """Reinicia las estadísticas del héroe a sus valores iniciales."""
+def reiniciar_heroe(heroe: dict) -> dict:
+    """Reinicia las estadísticas del héroe a sus valores iniciales.
+    toma como argumento un diccionario
+    devuelve un diccionario
+    """
     heroe['vida'] = 100
     heroe['vida maxima'] = 100
     heroe['ataque'] = 13
@@ -169,16 +209,32 @@ def reiniciar_heroe(heroe: dict):
     heroe['puntuacion'] = 0  # Reiniciar puntuación
     return heroe
 
-def reiniciar_boss(enemigos: dict):
+def reiniciar_boss(enemigos: dict) -> dict:
+    """Reinicia la vida del boss a sus valores iniciales.
+    toma como argumento un diccionario
+    devuelve un diccionario
+    """
+
     enemigos['Rey Demonio']['vida'] = 100
     return enemigos
     
 
-def guardar_puntuacion(historial_puntuacion, heroe):
+def guardar_puntuacion(historial_puntuacion : list, heroe : dict) -> list:
+    '''
+    funcion para guardar la puntuacion
+    toma una lista y un diccionario como parametros
+    devuelve una lista
+    '''
     historial_puntuacion.append([heroe['nombre'], heroe['puntuacion']])
     return historial_puntuacion
 
-def jugar_juego(heroe:dict):
+def jugar_juego(heroe : dict):
+    '''
+    funcion para comenzar el juego
+    toma un diccionario para nombrar al personaje principal
+    retorna el nombre y verifica que el juego se deba ejecutar
+    no retorna nada, solo printea
+    '''
 
     heroe['nombre'] = ingresar_nombre(heroe)
     print(f"Bienvenido, {heroe['nombre']}! Prepárate para adentrarte en el laberinto...")
@@ -188,7 +244,12 @@ def jugar_juego(heroe:dict):
         efecto_accion(accion)
 
 
-def verificar_vida_boss(enemigos: dict, historial_puntuacion):
+def verificar_vida_boss(enemigos : dict, historial_puntuacion : list) -> bool:
+    '''
+    funcion para verificar que el boss siga vivo, si esta muerto llama a las funciones de reinicio de partida
+    toma un diccionario y una lista como argumentos
+    retorna un booleano
+    '''
     if enemigos['Rey Demonio']["vida"] > 0:
         return True   
     else:
@@ -199,7 +260,12 @@ def verificar_vida_boss(enemigos: dict, historial_puntuacion):
         
         return False  
 
-def verificar_estado_juego(heroe:dict, historial_puntuacion)->bool:  
+def verificar_estado_juego(heroe  :dict, historial_puntuacion : list) -> bool:  
+    '''
+    funcion para verificar que el protagonista siga vivo, si esta muerto llama a las funciones de reinicio de partida
+    toma un diccionario y una lista como argumentos
+    retorna un booleano
+    '''
     
     if heroe.get("vida", 0) > 0:
         return True   
@@ -211,19 +277,37 @@ def verificar_estado_juego(heroe:dict, historial_puntuacion)->bool:
         return False  
     
     
-def ingresar_nombre(heroe):
+def ingresar_nombre(heroe : dict) -> str:
+    '''
+    funcion para nombrar al protagonista, valida que el nombre no este vacio
+    toma un diccionario como argumento
+    retorna un string
+    '''
     heroe['nombre'] = input("Introduce el nombre de tu héroe: ")
     while len(heroe['nombre']) <= minimo:
         heroe['nombre'] = input("El nombre del heroe no puede estar vacio: ")
     return heroe['nombre']
 
-def tomar_accion():
+def tomar_accion() -> str:
+    '''
+    funcion para tomar accion, valida que no sea erronea la eleccion
+    no toma argumentos
+    retorna un string
+
+    '''
     accion = input("¿Que eleccion tomas?: (avanzar / descansar): " ).strip().lower()
     while accion not in ["avanzar", "descansar"]:
         accion = input("Opcion equivocada, decide: (avanzar / descansar)" ).strip().lower()
     return accion
 
-def efecto_accion(accion:str):
+def efecto_accion(accion : str):
+    '''
+    funcion para verificar que accion tomo el jugador
+    dependiendo la accion llama a la funcion comenzar evento o tomar descanso
+    toma como argumento un str
+    no retorna nada
+
+    '''
 
     if accion == "avanzar":
         evento = random.choice(opciones_encuentro)
@@ -236,6 +320,11 @@ def efecto_accion(accion:str):
 
 
 def tomar_descanso():
+    '''
+    funcion que printea un menu de descanso en bucle hasta que el jugador quiera seguir la aventura
+    con un match valida que la opcion sea correcta
+    no toma argumentos y no retorna nada
+    '''
     descansando = True
     while descansando:
         print('''
@@ -258,6 +347,13 @@ def tomar_descanso():
                 print("Opcion erronea")
 
 def tomar_pocion(heroe: dict):
+    '''
+    funcion para tomar pociones
+    valida que la vida no este al maximo y tampoco se pase del maximo
+    valida que haya pociones en el inventario
+    toma un diccionario como argumento
+    no retorna nada
+    '''
 
     if heroe['vida'] == heroe['vida maxima']:
         print("Ya tienes la vida al maximo")
@@ -274,12 +370,22 @@ def tomar_pocion(heroe: dict):
         print("No tienes pociones en tu inventario.")       
         return 
 
-def ver_inventario(heroe):
+def ver_inventario(heroe : dict):
+    '''
+    funcion para ver el inventario
+    toma un diccionario como argumento y lo recorre printeando el valor
+    no retorna nada, printea
+    '''
 
     for pociones, cantidad in heroe['inventario'].items():
         print(f"{pociones}: tienes {cantidad}")
 
-def comenzar_evento(evento, heroe):
+def comenzar_evento(evento : str, heroe : dict):
+    '''
+    funcion evaluar en que evento cae el jugador
+    toma un diccionario como argumento y un string
+    no retorna nada, llama a las funciones depende el evento
+    '''
     
     if evento == "enemigo":
         enemigo_aleatorio = random.choice(list(enemigos.keys()))
@@ -313,7 +419,13 @@ def comenzar_evento(evento, heroe):
             modificar_puntuacion(heroe)
 
 
-def comenzar_combate(enemigo):
+def comenzar_combate(enemigo : str):
+    '''
+    funcion la mecanica de combate
+    toma un string como argumento y llama a las funciones pertinentes
+    crea un bucle hasta que la vida del protagonista o monstruo caiga a cero
+    no retorna nada
+    '''
     
     nombre_monstruo = enemigo
     monstruo = enemigos[enemigo]
@@ -341,7 +453,14 @@ def comenzar_combate(enemigo):
         else:
             tomar_pocion(heroe)
 
-def obtener_objeto(objeto,heroe):
+def obtener_objeto(objeto : str,heroe : dict):
+    '''
+    funcion para obtener un objeto
+    toma un diccionario y un string como agumentos
+    evalua cual es el resultado y llama a las funciones pertinentes
+    incrementa los valores del diccionario heroe dependiendo el resultado
+    no retorna nada
+    '''
 
     if objeto == "Piedra afiladora":
         mejorar_ataque(heroe)
@@ -359,27 +478,55 @@ def obtener_objeto(objeto,heroe):
         obtener_pocion(heroe)
         
     
-def modificar_puntuacion(heroe):
+def modificar_puntuacion(heroe : dict):
+    '''
+    funcion para aumentar la puntuacion y el contador de eventos
+    recibe un diccionario como argumento y le incrementa los valores
+    no retorna nada
+    '''
     heroe['eventos'] += 1
     heroe['puntuacion'] += 10
 
 def elegir_accion_combate():
+    '''
+    funcion para elegir la accion en el combate
+    valida que la eleccion este entre las opciones
+    no toma ningun argumento
+    no retorna ningun argumento
+    '''
     accion_combate = input("Elige una acción: (atacar / tomar pocion / pedir piedad): ").strip().lower()
     while accion_combate not in opciones_combate:
         accion_combate = input("Comando equivocado (atacar / tomar pocion / pedir piedad): ").strip().lower()
     return accion_combate
 
-def dar_ataque(heroe, nombre_monstruo, monstruo):
+def dar_ataque(heroe : dict, nombre_monstruo : str, monstruo :dict):
+    '''
+    funcion para atacar
+    recibe dos diccionarios como argumento y un string
+    hace la interaccion entre los dos diccionarios y utiliza el string para printear el nombre
+    no retorna nada
+    '''
     daño_infligido = max(0, heroe['ataque'] - monstruo['defensa'])
     monstruo['vida'] = max(0, monstruo['vida'] - daño_infligido)  
     print(f"Atacas al {nombre_monstruo} y le infliges {daño_infligido} de daño. Vida restante del enemigo: {monstruo['vida']}.")
 
-def recibir_ataque(enemigo, nombre_monstruo, heroe):
+def recibir_ataque(enemigo : dict, nombre_monstruo : str, heroe : dict):
+    '''
+    funcion para recibir el ataque
+    recibe dos diccionarios como argumento y un string
+    hace la interaccion entre los dos diccionarios y utiliza el string para printear el nombre
+    no retorna nada
+    '''
     daño_recibido = max(0, enemigo['ataque'] - heroe['defensa'])
     heroe['vida'] = max(heroe['vida'] - daño_recibido, 0)
     print(f"El {nombre_monstruo} te ataca y te inflige {daño_recibido} de daño. Vida restante: {heroe['vida']}.")
 
-def pedir_piedad():
+def pedir_piedad() -> bool:
+    '''
+    funcion para pedir piedad
+    no toma argumentos, hace aleatoriamente una decision en string
+    retorna un booleano
+    '''
     piedad = ["no tuvo piedad"] * 2 + ["tuvo piedad"]
     decision_monstruo = random.choice(piedad)
     
@@ -389,20 +536,41 @@ def pedir_piedad():
     else:    
         return False
 
-def mejorar_ataque(heroe):
+def mejorar_ataque(heroe : dict):
+    '''
+    funcion para aumentar el ataque 
+    recibe un diccionario como argumento y le incrementa los valores
+    no retorna nada
+    '''
     heroe['ataque'] += 2
     print(f"Espada mejorada, tienes {heroe['ataque']} de ataque")
 
-def mejorar_armadura(heroe):
+def mejorar_armadura(heroe : dict):
+    '''
+    funcion para aumentar la armadura 
+    recibe un diccionario como argumento y le incrementa los valores
+    no retorna nada
+    '''
+    
     heroe['defensa'] += 2
     print(f"Armadura mejorada, tienes {heroe['defensa']} de defensa")
 
-def mejorar_vida(heroe):
+def mejorar_vida(heroe : dict):
+    '''
+    funcion para aumentar la vida 
+    recibe un diccionario como argumento y le incrementa los valores
+    no retorna nada
+    '''
     heroe['vida'] += 30
     heroe['vida maxima'] += 30       
     print(f"Vida maxima mejorada, tienes {heroe['vida maxima']} de vida maxima y {heroe['vida']} de vida")
 
-def obtener_pocion(heroe):
+def obtener_pocion(heroe : dict):
+    '''
+    funcion para aumentar las pociones 
+    recibe un diccionario como argumento y le incrementa los valores
+    no retorna nada
+    '''
     heroe['inventario']['pocion'] += 1
     print(f"Pocion agregada al inventario, ahora tienes {heroe['inventario']['pocion']}")
 
