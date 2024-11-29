@@ -1,79 +1,15 @@
 import random
 import keyboard
+from personajes import *
 
-# Enemigos
-enemigos = {
-    "Esqueleto": {
-        "vida": 35,
-        "vida maxima":35,
-        "ataque": 10,
-        "defensa": 2
-        },
-    "Goblin": {
-        "vida": 30,
-        "vida maxima": 30,
-        "ataque": 8,
-        "defensa": 3
-        },
-    "Troll": {
-        "vida": 55,
-        "vida maxima": 55,
-        "ataque": 13,
-        "defensa": 8
-        },
-    "Slime": {
-        "vida": 15,
-        "vida maxima": 15,
-        "ataque": 6,
-        "defensa": 2
-        },
-    "Lobo": {
-        "vida": 28,
-        "vida maxima": 28,
-        "ataque": 10,
-        "defensa": 2
-        },
-    "Zombie": {
-        "vida": 25,
-        "vida maxima": 25,
-        "ataque": 8,
-        "defensa": 4
-        },    
-    "Rey Demonio": {  
-        'vida': 100,
-        'vida maxima': 100,
-        'ataque': 10,
-        'defensa': 10,
-    }
-}
-
-# heroe
-heroe = {
-    "nombre": "",
-    "vida": 100,
-    "vida maxima": 100,
-    "ataque": 13,
-    "defensa": 2,
-    "inventario": {"pocion": 1},  
-    "puntuacion": 0,
-    "eventos": 0
-}
-
-
+historial_puntuacion = []
+minimo = 0
 #objetos
 objetos = ["Piedra afiladora", "Mejora de armadura", "Anillo de vida", "pocion", "nada"]
 # encuentro random
 opciones_encuentro = ["enemigo"] * 2 + ["trampa"] + ["objeto"] * 2
 
 opciones_combate = ["atacar", "tomar pocion", "pedir piedad"]
-
-historial_puntuacion = []
-
-
-minimo = 0
-
-
-
 
 def mostrar_menu() -> str:
     '''
@@ -89,8 +25,6 @@ def mostrar_menu() -> str:
     4: SALIR
     5: MOSTRAR PUNTUACION
     ''')
-    
-
 
 def burbuja(historial: list):
     '''
@@ -118,41 +52,7 @@ def mostrar_puntuacion(historial_puntuacion: list):
         burbuja(historial_puntuacion)
         for puntuacion in historial_puntuacion:
             print(puntuacion)
-    
 
-def elegir_menu():
-    '''
-    funcion para elegir en el menu
-    no toma argumentos
-    no retorna nada
-    
-    '''
-    seleccion = ""
-    while seleccion != "4":
-        print(mostrar_menu())
-        seleccion = input("elige una opcion: ")
-        match seleccion:
-
-            case "1":
-                jugar_juego(heroe)
-
-            case "2":
-                print(mostrar_creditos())
-            
-            case "3":
-                print(como_jugar())
-
-            case "4":
-                print(salir_juego())
-                return
-            
-            case "5":
-                mostrar_puntuacion(historial_puntuacion)
-
-            case _:
-                print(f"opcion incorrecta")
-
-    
 
 def mostrar_creditos() -> str:
     '''
@@ -195,6 +95,7 @@ def salir_juego():
     keyboard.read_event()
     
 
+
 def reiniciar_heroe(heroe: dict) -> dict:
     """Reinicia las estadísticas del héroe a sus valores iniciales.
     toma como argumento un diccionario
@@ -227,22 +128,6 @@ def guardar_puntuacion(historial_puntuacion : list, heroe : dict) -> list:
     '''
     historial_puntuacion.append([heroe['nombre'], heroe['puntuacion']])
     return historial_puntuacion
-
-def jugar_juego(heroe : dict):
-    '''
-    funcion para comenzar el juego
-    toma un diccionario para nombrar al personaje principal
-    retorna el nombre y verifica que el juego se deba ejecutar
-    no retorna nada, solo printea
-    '''
-
-    heroe['nombre'] = ingresar_nombre(heroe)
-    print(f"Bienvenido, {heroe['nombre']}! Prepárate para adentrarte en el laberinto...")
-    
-    while verificar_vida_boss(enemigos, historial_puntuacion) and verificar_estado_juego(heroe, historial_puntuacion):
-        accion = tomar_accion()
-        efecto_accion(accion)
-
 
 def verificar_vida_boss(enemigos : dict, historial_puntuacion : list) -> bool:
     '''
@@ -573,15 +458,3 @@ def obtener_pocion(heroe : dict):
     '''
     heroe['inventario']['pocion'] += 1
     print(f"Pocion agregada al inventario, ahora tienes {heroe['inventario']['pocion']}")
-
-
-
-    
-
-
-    
-
-
-elegir_menu()
-
-
